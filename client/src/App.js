@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
 import Register from './pages/Register';
@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage/>}/>
+        <Route path='/' element={<ProtectedRoutes><HomePage/></ProtectedRoutes>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
       </Routes>
@@ -16,4 +16,11 @@ function App() {
   );
 }
 
+export function ProtectedRoutes(props){
+  if(localStorage.getItem("user")){
+    return props.children
+  }else{
+    return <Navigate to='/login'/>
+  }
+}
 export default App;
