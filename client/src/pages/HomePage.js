@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Modal } from "antd";
+import { Form, Modal, Select } from "antd";
 import Layout from "../components/Layouts/Layout";
 import Input from "antd/es/input/Input";
 
@@ -11,7 +11,7 @@ const HomePage = () => {
   return (
     <Layout>
       <div className="filters">
-      <div>Range Filter</div>
+        <div>Range Filter</div>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
           Add New
         </button>
@@ -27,6 +27,39 @@ const HomePage = () => {
           <Form.Item label="Amount" name="amount">
             <Input type="text" />
           </Form.Item>
+          <Form.Item label="type" name="type">
+            <Select>
+              <Select.Option value="income">Income</Select.Option>
+              <Select.Option value="expense">Expense</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Category" name="category">
+            <Select>
+              <Select.Option value="salary">Salary</Select.Option>
+              <Select.Option value="tip">Tip</Select.Option>
+              <Select.Option value="project">Project</Select.Option>
+              <Select.Option value="food">Food</Select.Option>
+              <Select.Option value="movie">Movie</Select.Option>
+              <Select.Option value="bills">Bills</Select.Option>
+              <Select.Option value="medical">medical</Select.Option>
+              <Select.Option value="fee">fee</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Date" name="date">
+            <Input type="date" />
+          </Form.Item>
+          <Form.Item label="Refrence" name="refrence">
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item label="Description" name="description">
+            <Input type="text" />
+          </Form.Item>
+          <div className="d-flex justify-content-end">
+            <button type="submit" className="btn btn-primary">
+              {" "}
+              SAVE
+            </button>
+          </div>
         </Form>
       </Modal>
     </Layout>
