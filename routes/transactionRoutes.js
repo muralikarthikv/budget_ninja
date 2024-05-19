@@ -6,5 +6,5 @@ const router = express. Router();
 //add transection POST MEthod
 router.post('/add-transection', addTransaction)
 //get transactions
-router.get('/get-transaction', getAllTransaction)
+router.post('/get-transaction', getAllTransaction)
 module.exports= router;
