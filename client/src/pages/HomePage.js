@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Modal, Select, Table, message, DatePicker } from "antd";
+import {UnorderedListOutlined,AreaChartOutlined} from '@ant-design/icons'
 import Layout from "../components/Layouts/Layout";
 import Input from "antd/es/input/Input";
 import axios from "axios";
@@ -15,6 +16,7 @@ const HomePage = () => {
   const [frequency, setFrequency] = useState("7");
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState("all");
+  const [viewData,setViewData]=useState('table');
 
   const columns = [
     {
@@ -116,9 +118,16 @@ const HomePage = () => {
             <Select.Option value="expense">Expense</Select.Option>
           </Select>
         </div>
+        <div className="switch-icon">
+            <UnorderedListOutlined className="mx-2" onClick={()=>{setViewData('table')}}/>
+            <AreaChartOutlined className="mx-2" onClick={()=>setViewData('analytics')}/>
+          </div>
+        <div>
+          
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
           Add New
         </button>
+        </div>
       </div>
       <div className="content">
         <Table columns={columns} dataSource={allTransaction} />
