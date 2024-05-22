@@ -6,6 +6,7 @@ import Input from "antd/es/input/Input";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import moment from "moment";
+import Analytics from "../components/Analytics";
 
 const { RangePicker } = DatePicker;
 
@@ -119,8 +120,8 @@ const HomePage = () => {
           </Select>
         </div>
         <div className="switch-icon">
-            <UnorderedListOutlined className="mx-2" onClick={()=>{setViewData('table')}}/>
-            <AreaChartOutlined className="mx-2" onClick={()=>setViewData('analytics')}/>
+            <UnorderedListOutlined className={`mx-2 ${viewData === 'table' ? 'active-icon': 'inactive-icon'}`} onClick={()=>{setViewData('table')}}/>
+            <AreaChartOutlined className={`mx-2 ${viewData === 'analytics' ? 'active-icon': 'inactive-icon'}`} onClick={()=>setViewData('analytics')}/>
           </div>
         <div>
           
@@ -130,7 +131,10 @@ const HomePage = () => {
         </div>
       </div>
       <div className="content">
-        <Table columns={columns} dataSource={allTransaction} />
+        {viewData === 'table' ? <Table columns={columns} dataSource={allTransaction} /> 
+      :<Analytics allTransaction={allTransaction}/>  
+      }
+        
       </div>
       <Modal
         title="Add Transaction"
