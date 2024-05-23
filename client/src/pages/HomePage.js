@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Modal, Select, Table, message, DatePicker } from "antd";
-import {UnorderedListOutlined,AreaChartOutlined} from '@ant-design/icons'
+import {UnorderedListOutlined,AreaChartOutlined,EditOutlined,DeleteOutlined} from '@ant-design/icons'
 import Layout from "../components/Layouts/Layout";
 import Input from "antd/es/input/Input";
 import axios from "axios";
@@ -18,6 +18,7 @@ const HomePage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState("all");
   const [viewData,setViewData]=useState('table');
+  const [editable,setEditable]=useState(null)
 
   const columns = [
     {
@@ -47,6 +48,15 @@ const HomePage = () => {
     },
     {
       title: 'Actions',
+      render : (text,record)=>(
+        <div>
+          <EditOutlined onClick={()=>{
+            setEditable(record)
+            setShowModal(true)
+          }}/>
+          <DeleteOutlined className="mx-2"/>
+        </div>
+      )
     },
   ];
 
@@ -78,12 +88,24 @@ const HomePage = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
-      await axios.post("/transactions/add-transaction", {
-        ...values,
-        userid: user._id,
-      });
-      setLoading(false);
-      message.success("Transaction added successfully");
+      if(editable){
+        await axios.post("/transactions/edit-transaction", {
+        payload:{
+          ...values,
+          userId:user._id
+        },
+        transactionId:editable._id
+        });
+        setLoading(false);
+        message.success("Transaction added successfully");
+      }else{
+        await axios.post("/transactions/add-transaction", {
+          ...values,
+          userid: user._id,
+        });
+        setLoading(false);
+        message.success("Transaction added successfully");
+      }
       setShowModal(false);
       getAllTransaction(); // Refresh transactions after adding a new one
     } catch (error) {
@@ -137,12 +159,12 @@ const HomePage = () => {
         
       </div>
       <Modal
-        title="Add Transaction"
+        title={editable ? 'Edit Transaction' : '"Add Transaction"'}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
       >
-        <Form layout="vertical" onFinish={handleSubmit}>
+        <Form layout="vertical" onFinish={handleSubmit} initialValues={editable}>
           <Form.Item label="Amount" name="amount" required>
             <Input type="number" />
           </Form.Item>
