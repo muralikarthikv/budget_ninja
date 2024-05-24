@@ -27,7 +27,6 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: [true, "desc is required"],
   },
-  
 },{timestamps:true});
 const transactionModel = mongoose.model("transactions", transactionSchema);
 module.exports=transactionModel;

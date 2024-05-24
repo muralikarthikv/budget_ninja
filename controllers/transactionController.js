@@ -1,10 +1,8 @@
 const transactionModel = require("../models/transactionModel");
 const moment = require('moment');
-
 const getAllTransaction = async (req, res) => {
     try {
         const { frequency, selectedDate, type } = req.body;
-
         // Build the query
         let dateQuery = {};
         if (frequency !== 'custom') {
@@ -22,9 +20,7 @@ const getAllTransaction = async (req, res) => {
                 }
             };
         }
-
         const typeQuery = type !== 'all' ? { type } : {};
-
         const transactions = await transactionModel.find({
             userid: req.body.userid,
             ...dateQuery,
@@ -37,7 +33,6 @@ const getAllTransaction = async (req, res) => {
         res.status(500).json(error);
     }
 };
-
 const deleteTransaction=async(req,res)=>{
     try {
         await transactionModel.findOneAndUpdate({_id:req.body.transactionId},req.body.payload);
@@ -68,5 +63,4 @@ const addTransaction = async (req, res) => {
         res.status(500).json(error);
     }
 };
-
 module.exports = { getAllTransaction, addTransaction ,editTransaction,deleteTransaction };

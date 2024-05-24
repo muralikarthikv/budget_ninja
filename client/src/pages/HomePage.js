@@ -9,7 +9,6 @@ import moment from "moment";
 import Analytics from "../components/Analytics";
 
 const { RangePicker } = DatePicker;
-
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,12 +53,11 @@ const HomePage = () => {
             setEditable(record)
             setShowModal(true)
           }}/>
-          <DeleteOutlined className="mx-2"/>
+          <DeleteOutlined className="mx-2" onClick={handleDelete(record)}/>
         </div>
       )
     },
   ];
-
   const getAllTransaction = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -79,10 +77,22 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getAllTransaction();
   }, [frequency, selectedDate, type]);
+// delete handler
+const handleDelete = async(record)=>{
+  try {
+    setLoading(true)
+    await axios.post("transaction/delete-transaction",{transactionId:record._id})
+    setLoading(false)
+    message.success('Transaction Deleted')
+  } catch (error) {
+    setLoading(false)
+    console.log(error)
+    message.error('Unable to delete')
+  }
+}
 
   const handleSubmit = async (values) => {
     try {
